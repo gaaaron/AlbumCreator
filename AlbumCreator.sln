@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbumCreator.Wpf", "AlbumCreator.Wpf\AlbumCreator.Wpf.csproj", "{3F5CDFFD-B8BA-4424-8D25-EA7CA2AC772F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbumCreator.Common", "AlbumCreator.Common\AlbumCreator.Common.csproj", "{7235DCBC-0C59-4788-A42D-F03A92925235}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbumCreator.Model", "AlbumCreator.Model\AlbumCreator.Model.csproj", "{9612007D-814B-46DA-9E04-44D88EDFF383}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbumCreator.Wpf", "AlbumCreator.Wpf\AlbumCreator.Wpf.csproj", "{3F5CDFFD-B8BA-4424-8D25-EA7CA2AC772F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
