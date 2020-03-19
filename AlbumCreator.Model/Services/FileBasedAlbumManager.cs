@@ -34,19 +34,8 @@ namespace AlbumCreator.Model.Services
                 return null;
             }
 
-            var album = new AlbumDto();
             var serializedAlbum = File.ReadAllText(fileName);
-            var tempAlbum = JsonConvert.DeserializeObject<AlbumDto>(serializedAlbum);
-
-            foreach (var page in tempAlbum.Pages)
-            {
-                var tempPage = new PageDto { Layout = page.Layout };
-                foreach (var picture in page.Pictures)
-                {
-                    tempPage.Pictures.Add(picture);
-                }
-                album.Pages.Add(tempPage);
-            }
+            var album = JsonConvert.DeserializeObject<AlbumDto>(serializedAlbum);
 
             return album;
         }
