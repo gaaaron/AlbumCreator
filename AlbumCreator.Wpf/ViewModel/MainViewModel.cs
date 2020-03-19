@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -136,27 +138,36 @@ namespace AlbumCreator.ViewModel
             Album.SelectedPicture = null;
         }
 
-        private void OpenImageFolder()
+        private async void OpenImageFolder()
         {
             var source = _uiService.OpenFolderDialog();
             if (string.IsNullOrEmpty(source))
                 return;
 
-            ImageList.Clear();
-            var filters = new[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp" };
-            var files = FileUtils.GetFilesFrom(source, filters, true);
-            foreach (var image in files.Select(x => new Models.PrevImage(x)))
-            {
-                ImageList.Add(image);
-            }
+            var prevImageList = new List<PrevImage>();
+            await Task.Factory.StartNew(() => {
+                var filters = new[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp" };
+                var files = FileUtils.GetFilesFrom(source, filters, true);
+                foreach (var image in files.Select(x => new Models.PrevImage(x)))
+                {
+                    prevImageList.Add(image);
+                }
+            });
 
-            if (!ImageList.Any())
+            if (!prevImageList.Any())
             {
                 _uiService.ShowError(Constants.MissingImage);
                 return;
             }
-
-            RefreshCommands();
+            else
+            {
+                ImageList.Clear();
+                foreach (var image in prevImageList)
+                {
+                    ImageList.Add(image);
+                }
+                RefreshCommands();
+            }
         }
 
         #region Album

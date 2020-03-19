@@ -54,7 +54,9 @@ namespace AlbumCreator.Common.Utils
             var handle = bmp.GetHbitmap();
             try
             {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                var imsrc = Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                imsrc.Freeze();
+                return imsrc;
             }
             finally { DeleteObject(handle); }
         }
