@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3F5CDFFD-B8BA-4424-8D25-EA7CA2AC772F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AlbumCreator</RootNamespace>
+    <AssemblyName>AlbumCreator</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=3.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.3.1.2\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=3.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.1.2\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="CompositionRoot.cs" />
+    <Compile Include="IServiceCollectionExtension.cs" />
+    <Compile Include="Constants.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Constants.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EditableAlbum.cs" />
+    <Compile Include="Models\EditablePage.cs" />
+    <Compile Include="Models\EditablePicture.cs" />
+    <Compile Include="Models\PrevImage.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\UiService.cs" />
+    <Compile Include="WpfElements\Converters\EnumToVisibilityConverter.cs" />
+    <Compile Include="WpfElements\RelayCommand.cs" />
+    <Compile Include="WpfElements\ViewModelBase.cs" />
+    <Compile Include="WpfElements\CustomTreeView\AlbumItem.cs" />
+    <Compile Include="WpfElements\CustomTreeView\PageItem.cs" />
+    <Compile Include="WpfElements\CustomTreeView\PictureItem.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Plus_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Add File_48px.png" />
+    <Resource Include="WpfElements\Images\Open_48px.png" />
+    <Resource Include="WpfElements\Images\Save_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Delete File_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Add Image_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Remove Image_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Pictures Folder_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Sort Down_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Sort Up_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Sort Left_48px.png" />
+    <Resource Include="WpfElements\Images\Sort Right_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Layout1_48px.png" />
+    <Resource Include="WpfElements\Images\Layout2_48px.png" />
+    <Resource Include="WpfElements\Images\Layout3_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Layout4_48px.png" />
+    <Resource Include="WpfElements\Images\Layout5_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WpfElements\Images\Layout6_48px.png" />
+    <Resource Include="WpfElements\Images\Layout7_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlbumCreator.Common\AlbumCreator.Common.csproj">
+      <Project>{7235dcbc-0c59-4788-a42d-f03a92925235}</Project>
+      <Name>AlbumCreator.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AlbumCreator.Model\AlbumCreator.Model.csproj">
+      <Project>{9612007d-814b-46da-9e04-44d88edff383}</Project>
+      <Name>AlbumCreator.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Constants.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Constants.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

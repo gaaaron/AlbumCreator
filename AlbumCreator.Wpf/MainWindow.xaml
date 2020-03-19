@@ -1,0 +1,351 @@
+﻿<Window x:Class="AlbumCreator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlbumCreator"
+        xmlns:vm="clr-namespace:AlbumCreator.ViewModel"
+        xmlns:conv="clr-namespace:AlbumCreator.WpfElements.Converters"
+        xmlns:enumCommon="clr-namespace:AlbumCreator.Common.Enums;assembly=AlbumCreator.Common"
+        xmlns:customtreeview="clr-namespace:AlbumCreator.WpfElements.CustomTreeView"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        AllowDrop="True"
+        Title="{x:Static local:Constants.WindowTitle}" Height="1920" Width="1080" d:DataContext="{d:DesignInstance vm:MainViewModel }">
+
+    <Window.InputBindings>
+        <KeyBinding Key="Down" Command="{Binding NextPageCommand}" />
+        <KeyBinding Key="Up" Command="{Binding PrevPageCommand}" />
+        <KeyBinding Key="Enter" Command="{Binding AddPictureCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding RemovePictureCommand}" />
+        <KeyBinding Key="P" Command="{Binding AddPageCommand}" />
+        <KeyBinding Key="D1" Command="{Binding ChangeLayout1}" />
+        <KeyBinding Key="D2" Command="{Binding ChangeLayout2}" />
+        <KeyBinding Key="D3" Command="{Binding ChangeLayout3}" />
+        <KeyBinding Key="D4" Command="{Binding ChangeLayout4}" />
+        <KeyBinding Key="D5" Command="{Binding ChangeLayout5}" />
+        <KeyBinding Gesture="CTRL+V" Command="{Binding PasteCommand}" />
+        <KeyBinding Gesture="CTRL+X" Command="{Binding CropCommand}" />
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Ribbon x:Name="RibbonWin" SelectedIndex="0" Margin="0,-48,0,0" DockPanel.Dock="Top" Height="140" MouseOverBackground="AliceBlue" MouseOverBorderBrush="Transparent">
+            <RibbonTab x:Name="Tab" Height="Auto" VerticalAlignment="Top">
+                <RibbonGroup Width="Auto" Height="Auto" Margin="0" VerticalAlignment="Top" Header="{x:Static local:Constants.AlbumSectionTitle}">
+                    <Grid Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <RibbonButton Command="{Binding SaveCommand}" Margin="10,0" Grid.Column="0" LargeImageSource="WpfElements/Images/Save_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.SaveBtn}"/>
+                        <RibbonButton Command="{Binding OpenCommand}" Margin="10,0" Grid.Column="1" LargeImageSource="WpfElements/Images/Open_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.OpenBtn}"/>
+                        <RibbonButton Command="{Binding Path=CreateAlbumCommand}" Margin="10,0" Grid.Column="2" LargeImageSource="WpfElements/Images/Plus_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.CreateNewBtn}" />
+                    </Grid>
+                </RibbonGroup>
+                <RibbonGroup Width="Auto" Height="Auto" Margin="0" VerticalAlignment="Top" Header="{x:Static local:Constants.PageSectionTitle}">
+                    <Grid Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <RibbonButton Command="{Binding AddPageCommand}"  Margin="10,0" Grid.Column="0" LargeImageSource="WpfElements/Images/Add File_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.AddPageBtn}"/>
+                        <RibbonButton Command="{Binding RemovePageCommand}" Margin="10,0" Grid.Column="1" LargeImageSource="WpfElements/Images/Delete File_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.RemovePageBtn}" />
+                    </Grid>
+                </RibbonGroup>
+                <RibbonGroup Width="Auto" Height="Auto" Margin="0" VerticalAlignment="Top" Header="{x:Static local:Constants.ImageSectionTitle}">
+                    <Grid Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <RibbonButton Command="{Binding OpenFolderCommand}" Margin="10,0" Grid.Column="0" LargeImageSource="WpfElements/Images/Pictures Folder_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.OpenImageFolderBtn}"/>
+                        <RibbonButton Command="{Binding AddPictureCommand}" Margin="10,0" Grid.Column="1" LargeImageSource="WpfElements/Images/Add Image_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.AddImageBtn}"/>
+                        <RibbonButton Command="{Binding RemovePictureCommand}" Margin="10,0" Grid.Column="2" LargeImageSource="WpfElements/Images/Remove Image_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.RemoveImageBtn}" />
+                        <RibbonButton Command="{Binding MoveUpPictureCommand}" Margin="10,0" Grid.Column="3" LargeImageSource="WpfElements/Images/Sort Up_48px.png" VerticalAlignment="Top" Label="{x:Static local:Constants.MoveUpImageBtn}" />
+                        <RibbonButton Command="{Binding MoveDownPictureCommand}" Margin="10,0" Grid.Column="4" LargeImageSource="WpfElements/Images/Sort Down_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.MoveDownImageBtn}" />
+                    </Grid>
+                </RibbonGroup>
+                <RibbonGroup Width="Auto" Height="Auto" Margin="0" VerticalAlignment="Top" Header="{x:Static local:Constants.LayoutSectionTitle}">
+                    <Grid Width="Auto" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <RibbonButton Command="{Binding ChangeLayout1}" Margin="10,0" Grid.Column="0" LargeImageSource="WpfElements/Images/Layout1_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout1Btn}"/>
+                        <RibbonButton Command="{Binding ChangeLayout2}" Margin="10,0" Grid.Column="1" LargeImageSource="WpfElements/Images/Layout2_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout2Btn}" />
+                        <RibbonButton Command="{Binding ChangeLayout3}" Margin="10,0" Grid.Column="2" LargeImageSource="WpfElements/Images/Layout3_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout3Btn}" />
+                        <RibbonButton Command="{Binding ChangeLayout4}" Margin="10,0" Grid.Column="3" LargeImageSource="WpfElements/Images/Layout4_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout4Btn}" />
+                        <RibbonButton Command="{Binding ChangeLayout5}" Margin="10,0" Grid.Column="4" LargeImageSource="WpfElements/Images/Layout5_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout5Btn}" />
+                        <RibbonButton Command="{Binding ChangeLayout6}" Margin="10,0" Grid.Column="5" LargeImageSource="WpfElements/Images/Layout6_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout6Btn}" />
+                        <RibbonButton Command="{Binding ChangeLayout7}" Margin="10,0" Grid.Column="6" LargeImageSource="WpfElements/Images/Layout7_48px.png" VerticalAlignment="Stretch" Label="{x:Static local:Constants.Layout7Btn}" />
+                    </Grid>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+
+        <Grid Row="1" x:Name="EditArea" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid Column="0" Background="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="400" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <ListView Grid.Row="0" Margin="10" ItemsSource="{Binding ImageList}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedImage}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Width="100" Height="100" Source="{Binding Preview}" Margin="2"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Grid Row="2">
+                    <Expander Header="{x:Static local:Constants.PageTreeViewTitle}" IsExpanded="True" FontSize="18" FontWeight="Bold" Margin="10">
+                        <customtreeview:AlbumItem x:Name="AlbumItem"
+                                          BorderThickness="0" 
+                                          IsTabStop="False"
+                                          Background="WhiteSmoke"
+                                          FontSize="14" 
+                                          EditableAlbum="{Binding Album}" 
+                                          IsManipulationEnabled="False"/>
+                    </Expander>
+
+                </Grid>
+            </Grid>
+
+            <Grid Column="2" Margin="0,2,0,0"  x:Name="PreViewArea" >
+                <Grid Width="865" Height="920" VerticalAlignment="Top">
+
+                    <!-- LAYOUT 1 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout1}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid></Grid>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Height="350" Width="350" Background="White" Margin="42,42,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1" Height="350" Width="350" Background="White" Margin="0,42,42,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0" Height="350" Width="350" Background="White" Margin="42,0,0,42" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="1" Height="350" Width="350" Background="White" Margin="0,0,42,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[3].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- LAYOUT 2 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout2}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.8*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Height="350" Width="350" Background="White" Margin="42,42,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1" Height="350" Width="350" Background="White" Margin="0,42,42,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0" Height="440" Width="740" Grid.ColumnSpan="2" Margin="0,0,0,42" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- LAYOUT 3 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout3}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="0.8*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Height="440" Width="740" Grid.ColumnSpan="2" Margin="0,42,0,0" Background="White" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0" Height="350" Width="350" Background="White" Margin="42,0,0,42" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="1" Height="350" Width="350" Background="White" Margin="0,0,42,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- LAYOUT 4 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout4}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.8*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Height="350" Width="350" Background="White" Margin="42,42,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid Grid.Row="1" Height="440" Width="350" Background="White" Margin="42,0,0,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" VerticalAlignment="Bottom" />
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="0.8*" />
+                            </Grid.RowDefinitions>
+
+
+                            <Grid Grid.Row="0" Height="440" Width="350" Background="White" Margin="0,42,42,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" VerticalAlignment="Bottom" />
+                            </Grid>
+                            <Grid Grid.Row="1" Height="350" Width="350" Background="White" Margin="0,0,42,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[3].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+
+                    <!-- LAYOUT 5 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout5}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.8*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Height="350" Width="350" Background="White" Margin="0,42,42,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid Grid.Row="1" Height="440" Width="350" Background="White" Margin="0,0,42,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[3].Source}" Stretch="UniformToFill" VerticalAlignment="Bottom" />
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="0.8*" />
+                            </Grid.RowDefinitions>
+
+
+                            <Grid Grid.Row="0" Height="440" Width="350" Background="White" Margin="42,42,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" VerticalAlignment="Bottom" />
+                            </Grid>
+                            <Grid Grid.Row="1" Height="350" Width="350" Background="White" Margin="42,0,0,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <!-- LAYOUT 6 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout6}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.8*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Height="350" Width="350" Background="White" Margin="42,42,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1" Height="350" Width="350" Background="White" Margin="0,42,42,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0" Height="440" Width="350" Margin="42,0,0,42" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="1" Height="440" Width="350" Margin="0,0,42,42" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[3].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- LAYOUT 7 -->
+                    <Grid Background="Black" Visibility="{Binding Album.SelectedPage.Layout, Converter={conv:EnumToVisibilityConverter}, ConverterParameter={x:Static enumCommon:AlbumLayoutType.Layout7}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="0.8*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Height="440" Width="350" Margin="42,42,0,0" Background="White" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[0].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1" Height="440" Width="350" Margin="0,42,42,0" Background="White" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[1].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0" Height="350" Width="350" Background="White" Margin="42,0,0,42" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[2].Source}" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="1" Height="350" Width="350" Background="White" Margin="0,0,42,42" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Image Margin="10,10,10,50" Source="{Binding Album.SelectedPage.Pictures[3].Source}" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+        </Grid>
+
+
+    </Grid>
+</Window>
