@@ -17,7 +17,10 @@ namespace AlbumCreator.Model.Services
 
         public void SaveAlbum(IAlbum album)
         {
-            var serializedAlbum = JsonConvert.SerializeObject(album);
+            var albumDto = new AlbumDto();
+            albumDto.Reset(album);
+
+            var serializedAlbum = JsonConvert.SerializeObject(albumDto);
             var fileName = _uiService.SaveFileDialog();
             if (!string.IsNullOrEmpty(fileName))
                 File.WriteAllText(fileName, serializedAlbum);
